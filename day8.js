@@ -4,17 +4,10 @@ function createCalculator() {
   const add = (valor) => total += valor; 
   const subtract = (valor)  => total -= valor;
   const multiply = (valor)  => total *= valor;
-  function divide (valor) {
-    total /= valor;
-    return total;
-  }
-  function clear (valor) {
-    total = 0;
-    return total;
-  }
-  function getTotal (valor) {
-    return total;
-  }
+  const divide = (valor) => total /= valor;
+  const clear = () => total = 0;
+  const getTotal = () => total; 
+  
   return {
     add, 
     subtract,
