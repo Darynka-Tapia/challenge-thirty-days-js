@@ -11,7 +11,7 @@ function getPetExerciseInfo(type, age) {
         }
         break;
     case "gato":
-        if (age < 0) {
+        if (age <= 0) {
             return "Los gatitos necesitan frecuentes sesiones de juego";
         } else if (age >= 1 && age <= 7) {
             return "Los gatos a esta edad necesitan jugar diariamente";
@@ -20,7 +20,7 @@ function getPetExerciseInfo(type, age) {
         }
         break;
     case "ave":
-        if (age < 0) {
+        if (age <= 0) {
             return  "Las aves jóvenes necesitan mucho espacio para volar";
         } else if (age >= 1 && age <= 7) {
             return "Las aves necesitan jugar diariamente y un lugar para volar";
@@ -34,3 +34,4 @@ function getPetExerciseInfo(type, age) {
 
 }
   
+console.log(getPetExerciseInfo('ave', 0));
