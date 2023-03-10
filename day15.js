@@ -12,10 +12,12 @@ function hotelSystem(rooms) {
       throw new Error("La reservación no fue encontrada");
     }
   };
-  const getSortReservations = () => rooms;
+  const getSortReservations = () => {
+    let ordenado = [...listRooms];
+    return ordenado.sort((a, b) => Date.parse(formatDate(a.checkIn)) - Date.parse(formatDate(b.checkIn)));
+  };
   const addReservation = (reservation) => {
     if(listRooms.length === 0 ) { 
-      console.log('Una vez');
       listRooms.push(reservation); 
       return 'Recervación agregada exitosamente'
     }
@@ -24,7 +26,6 @@ function hotelSystem(rooms) {
     if( fechasNoDisponibles ){
       throw new Error("La habitación no está disponible");
     }else if(listRooms.length < rooms){
-      console.log('registrada')
       listRooms.push(reservation);
       habitacionRegistrada = true;
     }    
@@ -58,16 +59,23 @@ function hotelSystem(rooms) {
   };
 
   function validateDates(checkIntRegister, checkOutRegister, checkIntDate, checkOutDate) {
-    const checkIntRegisterParse = Date.parse(checkIntRegister);
-    const checkOutRegisterParse = Date.parse(checkOutRegister);
-    const checkIntDateParse = Date.parse(checkIntDate);
-    const checkOutDateParse = Date.parse(checkOutDate);
+    const checkIntRegisterParse = Date.parse(formatDate(checkIntRegister));
+    const checkOutRegisterParse = Date.parse(formatDate(checkOutRegister));
+    const checkIntDateParse = Date.parse(formatDate(checkIntDate));
+    const checkOutDateParse = Date.parse(formatDate(checkOutDate));
 
-    const lasFechasEstanEntreMedio = checkIntDateParse >= checkIntRegisterParse && checkOutDateParse <= checkOutRegisterParse;
     const laFechaDeInicioEstaenmedio = checkIntDateParse >= checkIntRegisterParse && checkIntDateParse < checkOutRegisterParse;
     const laFechaDefINEstaenmedio = checkOutDateParse > checkIntRegisterParse && checkOutDateParse <= checkOutRegisterParse;
+    const lasFechasEstanEntreMedio = checkIntDateParse <= checkIntRegisterParse && checkOutDateParse >= checkOutRegisterParse;
 
     return lasFechasEstanEntreMedio || laFechaDeInicioEstaenmedio || laFechaDefINEstaenmedio;
+  }
+  function formatDate(date) {
+    const response = date.split('/')
+    const month = response[1];
+    const day = response[0];
+    return `${month}/${day}`
+
   }
 
   return {
@@ -80,9 +88,6 @@ function hotelSystem(rooms) {
   }
 }
 
-
-/*
-const hotel = hotelSystem(5);
 
 const hotel = hotelSystem(10);
 
@@ -103,33 +108,4 @@ hotel.addReservation({
 });
 
 // Buscamos habitaciones disponibles entre el 01 y el 05 del primer mes
-hotel.getAvailableRooms("01/01", "05/01")
-console.log(hotel.getReservations());
-// console.log(hotel.searchReservation(4));
-// console.log(hotel.getAvailableRooms("05/10", "05/25"));
-
-// FECHA MM/DD pero deve de ser dd/mm -> Arreglarlo tambien 
-
-*/
-
-
-const hotel = hotelSystem(10);
-
-hotel.addReservation({
-  id: 1,
-  name: "John Doe",
-  checkIn: "01/01",
-  checkOut: "02/01",
-  roomNumber: 1,
-});
-
-hotel.addReservation({
-  id: 2,
-  name: "Pepe Doe",
-  checkIn: "01/01",
-  checkOut: "10/01",
-  roomNumber: 9,
-});
-
-// Buscamos habitaciones disponibles entre el 01 y el 05 del primer mes, La habitación no está disponible
 console.log(hotel.getAvailableRooms("01/01", "05/01"))
