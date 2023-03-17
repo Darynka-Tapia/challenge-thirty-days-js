@@ -2,7 +2,7 @@
 function arrayModified() {
     Array.prototype.myFilter = function(condition) {
         const newArray = [];
-        this.forEach(element => condition(element) ? newArray.push(element) : null);
+        this.forEach(element => condition(element) && newArray.push(element));
         return newArray
     }
 }  
